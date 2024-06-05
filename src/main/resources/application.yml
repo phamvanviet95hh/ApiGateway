@@ -1,0 +1,27 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: api-gateway
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/msc_example
+  main:
+    allow-bean-definition-overriding: true
+    web-application-type: reactive
+  cloud:
+    gateway:
+      routes:
+        - id: BookService
+          uri: http://localhost:1995
+          predicates:
+            - Path= /api/v1/cccd/**
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+              allowedOrigins: "*"
+              allowedMethods: "*"
+              allowedHeaders: "*"
